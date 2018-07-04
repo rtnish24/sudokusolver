@@ -16,6 +16,6 @@ public class MainActivity extends AppCompatActivity {
         example[8][0] = 1;
 
         Grid grid = new Grid(example);
-
+        grid.solve();
     }
 }

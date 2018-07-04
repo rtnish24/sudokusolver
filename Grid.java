@@ -27,6 +27,27 @@ public class Grid {
             }
         }
     }
+    
+    public void solve(){
+        while (!solved){
+            //backtrack case
+            if (activeCell.getValue() == 9){
+                grid[activeCell.getRow()][activeCell.getColumn()].setValue(0);
+                decrementActiveCell();
+                solve();
+            }
+            else{
+                grid[activeCell.getRow()][activeCell.getColumn()].setValue(activeCell.getValue() + 1);
+                if (noErrors()){
+                    incrementActiveCell();
+                    solve();
+                }
+                else{
+                    solve();
+                }
+            }
+        }
+    }
 
     public boolean noErrors(){
         boolean result = true;
@@ -91,8 +112,8 @@ public class Grid {
         if (activeCell.getIsStarter()){
             decrementActiveCell();
         }
-
     }
+
     public void setSolved(boolean solved) {
         this.solved = solved;
     }
