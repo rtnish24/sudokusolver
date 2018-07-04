@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         example[2][6] = 1;
         example[8][0] = 1;
 
-
+        Grid grid = new Grid(example);
 
     }
 }
