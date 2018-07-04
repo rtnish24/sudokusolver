@@ -6,6 +6,10 @@ public class Cell {
     private boolean isStarter = false;
     private int value;
 
+    public Cell(){
+        this.value = 0;
+    }
+
     public void setColumn(int column) {
         this.column = column;
     }
@@ -14,8 +18,12 @@ public class Cell {
         this.row = row;
     }
 
-    public void setStarter(boolean starter) {
+    public void setIsStarter(boolean starter) {
         isStarter = starter;
+    }
+
+    public boolean getIsStarter(){
+        return this.isStarter;
     }
 
     public void setValue(int value) {
