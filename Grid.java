@@ -117,6 +117,19 @@ public class Grid {
         }
     }
 
+    public String toString(){
+        String result = "";
+        for (int i = 0; i < 9; i++){
+            for (int j = 0; j < 9; j++) {
+                result += grid[i][j].getValue();
+                if (j !=8 ){
+                    result += " | ";
+                }
+            }
+            result += "\n";
+        }
+        return result;
+    }
     public void setSolved(boolean solved) {
         this.solved = solved;
     }
