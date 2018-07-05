@@ -11,10 +11,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         int[][] example = new int[9][9];
-        example[0][2] = 1;
-        example[2][6] = 1;
-        example[8][0] = 1;
-
         Grid grid = new Grid(example);
         grid.solve();
     }

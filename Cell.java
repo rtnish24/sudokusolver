@@ -7,6 +7,8 @@ public class Cell {
     private int value;
 
     public Cell(){
+        this.row = -1;
+        this.column = -1;
         this.value = 0;
     }
 

@@ -14,20 +14,23 @@ public class Grid {
         //fill in cell properties, find starting active cell
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                grid[row][col].setColumn(col);
-                grid[row][col].setRow(row);
+                this.grid[row][col] = new Cell();
+                this.grid[row][col].setColumn(col);
+                this.grid[row][col].setRow(row);
                 grid[row][col].setValue(inputArray[row][col]);
                 if (inputArray[row][col] != 0) {
                     grid[row][col].setIsStarter(true);
                 }
                 else{
-                    this.activeCell = grid[row][col];
-                    startingPointIsSet = true;
+                    while(!startingPointIsSet){
+                        activeCell = grid[row][col];
+                        startingPointIsSet = true;
+                    }
                 }
             }
         }
     }
-    
+
     public void solve(){
         while (!solved){
             //backtrack case
@@ -52,7 +55,7 @@ public class Grid {
     public boolean noErrors(){
         boolean result = true;
         List<Cell> cellsToCheck = new ArrayList<>();
-        for (int toCheck = 0; toCheck < 8; toCheck++) {
+        for (int toCheck = 0; toCheck < 9; toCheck++) {
             //add row to check
             if (!(activeCell.getColumn() == toCheck)) {
                 cellsToCheck.add(grid[activeCell.getRow()][toCheck]);
@@ -69,16 +72,16 @@ public class Grid {
         sectionColumn = activeCell.getColumn() - (activeCell.getColumn()%3);
         for (int c = 0; c < 3; c++){
             for (int d = 0; d < 3; d++){
-                if (!(c == activeCell.getRow() && d == activeCell.getColumn())) {
-                    cellsToCheck.add(grid[c][d]);
+                if (!((c + sectionRow) == activeCell.getRow() && (d + sectionColumn) == activeCell.getColumn())) {
+                    cellsToCheck.add(grid[c + sectionRow][d + sectionColumn]);
                 }
             }
         }
-
         //check for repeated numbers
         for (Cell cell: cellsToCheck){
-            if (cell.getValue() == activeCell.getValue()){
+            if (cell.getValue() == activeCell.getValue()) {
                 result = false;
+                return result;
             }
         }
         return result;
