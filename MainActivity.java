@@ -35,7 +35,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Grid grid = new Grid(startingBoard);
                 grid.solve();
-                System.out.println(grid.toString());
+
+                for (int i = 0; i < 9; i++) {
+                    for (int j = 0; j < 9; j++) {
+                        inputFields[i][j].setText(Integer.toString(grid.getCell(i, j).getValue()));
+                    }
+                }
             }
         });
     }

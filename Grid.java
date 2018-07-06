@@ -133,4 +133,8 @@ public class Grid {
     public void setSolved(boolean solved) {
         this.solved = solved;
     }
+
+    public Cell getCell(int i, int j){
+        return grid[i][j];
+    }
 }
