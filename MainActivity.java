@@ -1,7 +1,11 @@
 package com.example.sudokusolver;
 
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -10,12 +14,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int[][] example = new int[9][9];
-        example[0][2] = 1;
-        example[8][0] = 1;
-        example[2][6] = 1;
-        Grid grid = new Grid(example);
-        grid.solve();
-        System.out.println(grid.toString());
+        Button solveButton = findViewById(R.id.solveButton);
+
+        solveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int[][] startingBoard = new int[9][9];
+                EditText[][] inputFields = new EditText[9][9];
+                int id;
+
+                for (int i = 0; i < 9; i++) {
+                    for (int j = 0; j < 9; j++) {
+                        id = getResources().getIdentifier("cell" + Integer.toString(i) + Integer.toString(j), "id" , getPackageName());
+                        inputFields[i][j] = findViewById(id);
+                        if (!(inputFields[i][j].getText().length() == 0)){
+                            startingBoard[i][j] = Integer.valueOf(inputFields[i][j].getText().toString());
+                        }
+                    }
+                }
+                Grid grid = new Grid(startingBoard);
+                grid.solve();
+                System.out.println(grid.toString());
+            }
+        });
     }
 }

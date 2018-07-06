@@ -122,7 +122,7 @@ public class Grid {
         for (int i = 0; i < 9; i++){
             for (int j = 0; j < 9; j++) {
                 result += grid[i][j].getValue();
-                if (j !=8 ){
+                if (j !=8){
                     result += " | ";
                 }
             }
