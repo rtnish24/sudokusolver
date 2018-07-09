@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Grid {
     private boolean solved = false;
+    private boolean unSolvable = false;
+    private boolean isValid = true;
     private Cell activeCell;
     private Cell[][] grid;
 
@@ -23,8 +25,20 @@ public class Grid {
                 }
                 else{
                     while(!startingPointIsSet){
-                        activeCell = grid[row][col];
+                        this.activeCell = grid[row][col];
                         startingPointIsSet = true;
+                    }
+                }
+            }
+        }
+        //validate starting cells now that everything is instantiated, no null values
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (this.grid[row][col].getIsStarter()) {
+                    if (!noErrors(this.grid[row][col])) {
+                        solved = true;
+                        unSolvable = true;
+                        isValid = false;
                     }
                 }
             }
@@ -37,54 +51,47 @@ public class Grid {
             if (activeCell.getValue() == 9){
                 grid[activeCell.getRow()][activeCell.getColumn()].setValue(0);
                 decrementActiveCell();
-                solve();
             }
             else{
                 grid[activeCell.getRow()][activeCell.getColumn()].setValue(activeCell.getValue() + 1);
-                if (noErrors()){
+                if (noErrors(activeCell)){
                     incrementActiveCell();
-                    solve();
-                }
-                else{
-                    solve();
                 }
             }
         }
     }
 
-    public boolean noErrors(){
-        boolean result = true;
+    public boolean noErrors(Cell active){
         List<Cell> cellsToCheck = new ArrayList<>();
         for (int toCheck = 0; toCheck < 9; toCheck++) {
             //add row to check
-            if (!(activeCell.getColumn() == toCheck)) {
-                cellsToCheck.add(grid[activeCell.getRow()][toCheck]);
+            if (!(active.getColumn() == toCheck)) {
+                cellsToCheck.add(grid[active.getRow()][toCheck]);
             }
             //add column to check
-            if (!(activeCell.getRow() == toCheck)) {
-                cellsToCheck.add(grid[toCheck][activeCell.getColumn()]);
+            if (!(active.getRow() == toCheck)) {
+                cellsToCheck.add(grid[toCheck][active.getColumn()]);
             }
         }
         //add section to check
         int sectionRow = 0;
         int sectionColumn = 0;
-        sectionRow = activeCell.getRow() - (activeCell.getRow()%3);
-        sectionColumn = activeCell.getColumn() - (activeCell.getColumn()%3);
+        sectionRow = active.getRow() - (active.getRow()%3);
+        sectionColumn = active.getColumn() - (active.getColumn()%3);
         for (int c = 0; c < 3; c++){
             for (int d = 0; d < 3; d++){
-                if (!((c + sectionRow) == activeCell.getRow() && (d + sectionColumn) == activeCell.getColumn())) {
+                if (!((c + sectionRow) == active.getRow() && (d + sectionColumn) == active.getColumn())) {
                     cellsToCheck.add(grid[c + sectionRow][d + sectionColumn]);
                 }
             }
         }
         //check for repeated numbers
         for (Cell cell: cellsToCheck){
-            if (cell.getValue() == activeCell.getValue()) {
-                result = false;
-                return result;
+            if (cell.getValue() == active.getValue()) {
+                return false;
             }
         }
-        return result;
+        return true;
     }
 
     public void incrementActiveCell(){
@@ -107,6 +114,11 @@ public class Grid {
 
     public void decrementActiveCell(){
         if (activeCell.getColumn() == 0){
+            if (activeCell.getRow() == 0){
+                unSolvable = true;
+                solved = true;
+                return;
+            }
             activeCell = grid[activeCell.getRow() - 1][8];
         }
         else{
@@ -136,5 +148,13 @@ public class Grid {
 
     public Cell getCell(int i, int j){
         return grid[i][j];
+    }
+
+    public boolean isUnSolvable() {
+        return unSolvable;
+    }
+
+    public boolean isValid() {
+        return isValid;
     }
 }
